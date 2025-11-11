@@ -11,8 +11,8 @@ export default function Juego() {
   useEffect(() => {
     async function getWord() {
       try {
-        const res = await fetch("https://random-word-api.herokuapp.com/word?lang=es")
-        const data = await res.json()
+        const res =  fetch("https://random-word-api.herokuapp.com/word?lang=es")
+        const data =  res.json()
         if (data && data[0]) {
           setWord(data[0].toUpperCase())
         } 
