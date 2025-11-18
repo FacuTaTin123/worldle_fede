@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import './Juego.css'
 
 export default function Juego() {
   const [palabra, setPalabra] = useState("")
@@ -94,7 +93,7 @@ export default function Juego() {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: "center", marginTop: 40 }}>
       <h2>wordle</h2>
       <h3>la palabra tiene {palabra.length} letras</h3>
 
@@ -104,7 +103,18 @@ export default function Juego() {
         {intentos.map((t, i) => (
           <div key={i}>
             {t.split("").map((l, j) => (
-              <span key={j}>
+              <span
+                key={j}
+                style={{
+                  display: "inline-block",
+                  width: 30,
+                  height: 30,
+                  margin: 3,
+                  background: color(l, j),
+                  color: "white",
+                  lineHeight: "30px"
+                }}
+              >
                 {l}
               </span>
             ))}
