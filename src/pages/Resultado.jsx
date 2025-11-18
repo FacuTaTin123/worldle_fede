@@ -1,5 +1,7 @@
 import { useLocation, Link } from "react-router-dom"
 
+//aprendi a usar los state para saber quien gana y mostrar el resultado
+
 export default function Resultado() {
   const { state } = useLocation()
   return (
