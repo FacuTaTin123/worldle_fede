@@ -17,44 +17,46 @@ export default function Juego() {
         contador++
 
         try {
-          //con estos me vi obligado a usar ia para evitar los errores de la api
+         
           const timestamp = Date.now() + Math.random() // evita caché
           const controller = new AbortController() // para abortar fetch si demora
           const timeoutId = setTimeout(() => controller.abort(), 8000) // timeout de 8s
 
-          const res = await fetch( //el awiat espera a que la api funcione, sino no tira la palabra, serian promesas
-            `https://random-words-api.kushcreates.com/api?lang=es&number=10&length=5&t=${timestamp}`,
-            { signal: controller.signal } // conecta el abort a la request
+          const res = await fetch(
+            `https://random-words-api.vercel.app/word/spanish?t=${timestamp}`,
+            { signal: controller.signal }
           )
 
           clearTimeout(timeoutId)
 
-          if (!res.ok) throw new Error(`HTTP ${res.status}`) //tira error si la respuesta no es valida
+          if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-          const data = await res.json() //espera a que el json se convierta en un objeto
+          const data = await res.json() // la api devuelve un array con 1 objeto
 
           if (data && Array.isArray(data) && data.length > 0) {
-            const candidatas = data.filter(item => 
-              item.word && item.word.length === 5
-            )
-            //filtra para que las palabras sean de 5 letras
-            
-            if (candidatas.length > 0) {
-              const indiceRandom = Math.floor(Math.random() * candidatas.length) //elige una palabra random
-              const palabrita = candidatas[indiceRandom].word.toUpperCase() //hace que la palabra este en mayusculas
+            const palabraApi = data[0].word
+
+            if (palabraApi && palabraApi.length > 0) {
+              // limpio acentos para no ser tan especifico
+              let palabrita = palabraApi
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toUpperCase()
+
               console.log(palabrita)
+
               if (juega) {
                 setPalabra(palabrita)
               }
+
               return
-            } 
-          } 
+            }
+          }
         } catch (err) {
-          console.warn(`error en el intento ${contador}`) 
-          //aprendi que el console.warn muestra las cosas de otro color, y lo uso para el error
+          console.warn(`error en el intento ${contador}`)
           if (juega) {
           }
-          await new Promise(resolve => setTimeout(resolve, 2000)) //espera 2 segundos antes de volver a intentar
+          await new Promise(resolve => setTimeout(resolve, 2000))
         }
       }
     }
@@ -72,24 +74,28 @@ export default function Juego() {
 
   function handleEnter(e) {
     if (e.key === "Enter" && intento.length > 0) {
-      setIntentos([...intentos, intento]) //toma el intento del input cuando se presiona enter
+      setIntentos([...intentos, intento])
       if (intento === palabra) {
-        nav("/resultado", { state: { won: true, word: palabra } }) 
-      } else if (intentos.length >= 10) {
+        nav("/resultado", { state: { won: true, word: palabra } })
+      } else if (intentos.length >= 5) {
         nav("/resultado", { state: { won: false, word: palabra } })
       } else {
         setIntento("")
       }
-      //aprendi a manejar state en rutas, y lo use por si ganas o perdes
     }
   }
 
+  //para los colores
   function color(l, i) {
     if (!palabra) return ""
     if (i < palabra.length && palabra[i] === l) return "green"
     if (palabra.includes(l)) return "orange"
     return "gray"
-    //aca lo busque en una ia para pintar las letras si es que son correctas
+  }
+
+  function reiniciar() {
+    // intente llevar todo a cero pero no funciono asi que hice esto
+    window.location.reload()
   }
 
   return (
@@ -121,6 +127,22 @@ export default function Juego() {
           </div>
         ))}
       </div>
+
+      <button
+        style={{
+          marginTop: 20,
+          padding: "10px 20px",
+          background: "black",
+          color: "white",
+          borderRadius: 6,
+          border: "none",
+          cursor: "pointer"
+        }}
+        onClick={reiniciar}
+      >
+        Reiniciar
+      </button>
+      <h3>llevas haciendo {intentos.length} intentos</h3>
     </div>
   )
 }

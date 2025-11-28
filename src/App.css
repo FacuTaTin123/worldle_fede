@@ -1,51 +1,102 @@
 body {
-  background-color: #f0f0f0;
-  font-family: Arial, sans-serif;
+  background: #e8ecf3;
+  font-family: "Poppins", Arial, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
-h1, h2 {
-  color: #333;
+/* Titulos */
+h1, h2, h3 {
+  color: #222;
+  letter-spacing: 1px;
 }
 
+/* Input */
+input {
+  padding: 12px;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin: 15px auto;
+  border: 2px solid #aaa;
+  border-radius: 8px;
+  outline: none;
+  width: 260px;
+  transition: 0.2s;
+}
+
+input:focus {
+  border-color: #4c8df5;
+  box-shadow: 0 0 8px #4c8df566;
+}
+
+/* Botones */
 button {
-  background-color: #4caf50;
+  background: #4c8df5;
   color: white;
   border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
+  padding: 12px 25px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: 0.2s;
 }
 
 button:hover {
-  background-color: #45a049;
+  background: #3b73d6;
 }
 
-input {
-  padding: 8px;
-  font-size: 18px;
-  text-transform: uppercase;
-  margin: 10px;
-}
-
+/* Barra de navegación */
 nav {
-  background-color: #ddd;
-  padding: 10px;
+  background-color: #cdd7e5;
+  padding: 12px;
 }
 
 a {
-  color: black;
+  color: #222;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 a:hover {
   text-decoration: underline;
 }
 
+/* Letras estilo Wordle */
 span {
-  border-radius: 4px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
   font-weight: bold;
+  font-size: 22px;
+  color: #fff;
+  transition: 0.2s;
+  box-shadow: 0 3px 8px #00000022;
+}
+
+/* Colores Wordle */
+span[style*="green"] {
+  background: #66bb6a !important;
+}
+
+span[style*="orange"] {
+  background: #ffa726 !important;
+}
+
+span[style*="gray"] {
+  background: #90a4ae !important;
+}
+
+/* Animación al colocar letras */
+span {
+  animation: pop 0.15s ease-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.7); }
+  100% { transform: scale(1); }
 }

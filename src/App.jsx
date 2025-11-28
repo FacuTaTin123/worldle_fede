@@ -2,6 +2,8 @@ import { Routes, Route, Link } from "react-router-dom"
 import Inicio from "./pages/Inicio"
 import Juego from "./pages/Juego"
 import Resultado from "./pages/Resultado"
+import './App.css';
+
 
 export default function App() {
   return (
